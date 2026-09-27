@@ -1,0 +1,11 @@
+---
+import Layout from '../components/Layout.astro';
+import { data } from '../lib/content';
+---
+
+<Layout title={`Not found · ${data.hero.name}`} description={data.hero.lede} path="/404/">
+  <section class="shell page" style="padding-block: 6rem; display: grid; gap: 1rem;">
+    <h1>This page is not in the list.</h1>
+    <p><a class="link" href="/">{data.hero.name}</a> · <a class="link" href="/#sections">All sections</a></p>
+  </section>
+</Layout>

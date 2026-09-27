@@ -159,6 +159,15 @@ const preamble = readme.split(/^---$/m)[0].split('</div>').pop().trim().split('\
 const levelLine = preamble.find((p) => /🟢 Beginner/u.test(p));
 const introParas = preamble.filter((p) => p !== levelLine);
 need(introParas, 'the introduction under the banner');
+// The hero shows the opening paragraph's structure, not its prose: the two fields it names
+// ("One is **real-time synthesis**, judged by ..., where ...") and the line that ties them.
+const opening = introParas[0] ?? '';
+const side = (lead) => {
+  const m = opening.match(new RegExp(`${lead} \\*\\*(.+?)\\*\\*, (.+?), where `));
+  return m && { term: m[1].charAt(0).toUpperCase() + m[1].slice(1), judged: m[2].charAt(0).toUpperCase() + m[2].slice(1) + '.' };
+};
+const split = [need(side('One is'), 'the "One is **...**, judged by ..." sentence in the introduction'), need(side('The other is'), 'the "The other is **...**" sentence in the introduction')];
+const moral = need(opening.match(/(A model that wins one loses the other)[,.]/)?.[1], 'the "A model that wins one loses the other" line in the introduction');
 need(levelLine, 'the level legend (🟢 Beginner, 🟡 Intermediate, 🔴 Advanced)');
 
 // --- Section 2: providers, each with a real-time or offline lean -------------------------------
@@ -189,6 +198,10 @@ const firstByte = {
   slow: Number(need(streamIntro.match(/a (\d+) ms first byte/)?.[1], 'the slow first byte ("a N ms first byte") in section 4')),
   fast: Number(need(streamIntro.match(/starts speaking at (\d+) ms/)?.[1], 'the fast first byte ("starts speaking at N ms") in section 4')),
   html: md(streamIntro),
+  // The paragraph's bold sentence, the one claim the timeline draws.
+  claimHtml: inline(
+    (need(streamIntro.match(/\*\*(.+?)\*\*/)?.[1], 'the bold claim in the section 4 intro') ?? '').replace(/^./, (c) => c.toUpperCase()) + '.',
+  ),
 };
 const streamBlock = streamingSection?.body.split(/^### Provider streaming capabilities/m)[1]?.split(/^### /m)[0] ?? '';
 const [streamHeader = [], ...streamRows] = tableRows(streamBlock);
@@ -265,6 +278,8 @@ const data = {
     headline: headlineRaw.charAt(0).toUpperCase() + headlineRaw.slice(1),
     lede,
     introHtml: introParas.map((p) => md(p)).join(''),
+    split,
+    moral: moral ? `${moral}.` : '',
     levelsHtml: md(levelLine),
   },
   providers: { introHtml: md(introOf(providersSection.body).split('\n\n')[0]), rows: providers },

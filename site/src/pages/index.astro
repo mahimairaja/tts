@@ -21,7 +21,17 @@ const cell = (c: string) => ({ text: c.replace(/\s*\(vendor\)$/, ''), vendor: /\
     <div class="hero__copy">
       <p class="hero__name"><span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>{hero.name}</p>
       <h1>{hero.headline}</h1>
-      <div class="hero__lede prose" set:html={hero.introHtml} />
+      <ul class="split" aria-label="Two fields, one name">
+        {
+          hero.split.map((x, i) => (
+            <li class="split__side" data-side={i === 0 ? 'real-time' : 'offline'}>
+              <span class="split__term">{x.term}</span>
+              <span class="split__judged">{x.judged}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="split__moral">{hero.moral}</p>
       <dl class="hero__stats">
         <div><dt class="sr-only">Resources</dt><dd><strong class="mono">{data.count}</strong> resources</dd></div>
         <div><dt class="sr-only">Sections</dt><dd><strong class="mono">{sections.length}</strong> sections</dd></div>
@@ -37,7 +47,7 @@ const cell = (c: string) => ({ text: c.replace(/\s*\(vendor\)$/, ''), vendor: /\
       <div class="panel">
         <p class="panel__title"><a href={sectionHref(sectionByNum(4))}><span class="mono">04</span> {sectionByNum(4).title}</a></p>
         <FirstByte client:visible budget={firstByte.budget} fast={firstByte.fast} slow={firstByte.slow} />
-        <div class="panel__text prose" set:html={firstByte.html} />
+        <p class="panel__claim" set:html={firstByte.claimHtml} />
       </div>
     </div>
   </section>

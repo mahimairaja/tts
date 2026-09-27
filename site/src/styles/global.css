@@ -978,19 +978,56 @@ a.link:hover {
 }
 
 
-/* Home: the README's opening paragraphs stand in for a one-line lede. */
+/* Home: the opening paragraph's two fields, side by side, and the line that ties them. */
 .hero h1 {
   max-width: 20ch;
   font-size: clamp(2.1rem, 4.2vw, 3.2rem);
 }
-.hero__lede.prose {
+.split {
   display: grid;
-  gap: 0.8rem;
-  font-size: 1rem;
-  line-height: 1.65;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  max-width: 36rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
 }
-.hero__lede p {
+.split__side {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--side);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+.split__side[data-side='real-time'] {
+  --side: var(--beginner);
+}
+.split__side[data-side='offline'] {
+  --side: var(--accent);
+}
+.split__term {
+  color: var(--ink);
+  font-weight: 600;
+}
+.split__judged {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.split__moral {
+  margin: 0.9rem 0 0;
+  color: var(--ink-soft);
+  font: 500 0.8125rem/1.4 var(--mono);
+}
+.panel__claim {
   margin: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.45;
 }
 
 /* First byte, to scale: two lanes, the caller's budget, and a playhead. */

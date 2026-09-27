@@ -529,7 +529,7 @@ Two jobs live here: marking synthetic speech at generation time so it stays attr
 ### Watermarking standards and models
 
 - 🟢 [SynthID (Google DeepMind)](https://deepmind.google/models/synthid/): Google DeepMind's cross-modal watermark that embeds an inaudible, edit-robust signal into generated audio (Lyria, NotebookLM) and is now adopted as a shared provenance layer by ElevenLabs, OpenAI, and others, verifiable through the SynthID Detector portal.
-- 🟢 [Detecting AI Audio with SynthID (ElevenLabs)](https://elevenlabs.io/blog/synthid): ElevenLabs' writeup of embedding Google DeepMind's SynthID into its generated speech and offering a free detector page, useful for seeing how a major TTS vendor operationalizes watermarking that survives trimming, speed changes, and format conversion; note the commercial author.
+- 🟢 [What is SynthID, and why is ElevenLabs using it? (ElevenLabs)](https://elevenlabs.io/docs/help-center/legal/audio-detector/what-is-synth-id-and-why-is-eleven-labs-using-it): ElevenLabs' explainer on embedding Google DeepMind's SynthID into its generated speech and checking it with the free Audio Detector, useful for seeing how a major TTS vendor operationalizes watermarking that survives trimming, speed changes, and format conversion; note the commercial author.
 - 🟡 [AudioSeal (Meta)](https://github.com/facebookresearch/audioseal): Meta's MIT-licensed generator and detector for localized speech watermarking, where the detector predicts watermark presence per sample (down to 1/16000 of a second) fast enough for real-time use, making it the go-to open library for builders who want to mark and localize synthetic segments themselves.
 - 🟡 [PerTh Watermarker (Resemble AI)](https://github.com/resemble-ai/Perth): Resemble AI's MIT-licensed perceptual-threshold neural watermarker, embedded by default in every clip from the open-source Chatterbox TTS model and shipped as a small library that both embeds and detects the mark, so anyone deploying Chatterbox gets provenance marking and verification with no extra integration; note the commercial author.
 
@@ -558,7 +558,7 @@ Shipping a synthetic voice in 2026 is a legal question before it is a product qu
 - 🟡 [EU AI Act: Transparency Rules, a Practical Guide to Article 50](https://artificialintelligenceact.eu/transparency-rules-article-50/): A clause-by-clause walkthrough of the Article 50 disclosure and marking duties that maps each obligation to who must comply (provider versus deployer), useful for scoping what a voice product actually has to label.
 - 🟡 [FTC: Proposal to Combat AI Impersonation of Individuals](https://www.ftc.gov/news-events/news/press-releases/2024/02/ftc-proposes-new-protections-combat-ai-impersonation-individuals): The FTC supplemental notice of proposed rulemaking that would extend its impersonation rule to AI impersonation of individuals, letting the agency sue and claw back money from operators who use cloned voices to impersonate a person, agency, or brand.
 - 🔴 [NO FAKES Act (S. 4591, 119th Congress)](https://www.congress.gov/bill/119th-congress/senate-bill/4591): The bipartisan federal bill that would create a nationwide property right in a person's voice and visual likeness, with a notice-and-takedown regime for unauthorized digital replicas, advanced by the Senate Judiciary Committee on a unanimous voice vote in June 2026.
-- 🟡 [Tennessee ELVIS Act (Ensuring Likeness Voice and Image Security)](https://en.wikipedia.org/wiki/ELVIS_Act): Summary of the first US law to make voice a protected property right, defining voice broadly enough to cover a simulation and giving individuals injunctive relief and damages against unauthorized cloning (effective July 2024).
+- 🟡 [Tennessee ELVIS Act, explained (Vanderbilt Law School)](https://law.vanderbilt.edu/why-tennessees-elvis-act-is-the-king-of-artificial-intelligence-protections/): Summary of the Ensuring Likeness Voice and Image Security Act, the first US law to make voice a protected property right, defining voice broadly enough to cover a simulation and giving individuals injunctive relief and damages against unauthorized cloning (effective July 2024).
 
 ### Consent, provenance, and practical frameworks
 
@@ -591,7 +591,7 @@ These are runnable, end-to-end guides for building one TTS system at a time, fro
 ### Model-specific quickstarts
 
 - 🟡 [F5-TTS](https://github.com/SWivid/F5-TTS): Flow-matching diffusion-transformer TTS with a Gradio and CLI inference quickstart plus a Gradio fine-tuning interface, a good hands-on repo for expressive zero-shot cloning you can run locally before deciding to train.
-- 🟡 [Piper training guide (piper1-gpl)](https://thedocs.io/piper1-gpl/usage/training/): Current training guide (dataset prep, fine-tune from a checkpoint, export to ONNX) for the Open Home Foundation piper1-gpl engine, the right choice when you want a small offline voice that runs on CPU or edge hardware.
+- 🟡 [Piper training guide (piper1-gpl)](https://github.com/OHF-Voice/piper1-gpl/blob/main/docs/TRAINING.md): Current training guide (dataset prep, fine-tune from a checkpoint, export to ONNX) for the Open Home Foundation piper1-gpl engine, the right choice when you want a small offline voice that runs on CPU or edge hardware.
 
 </details>
 

@@ -1,0 +1,238 @@
+---
+// The home page. Every heading, paragraph, table cell and link below comes from README.md via
+// src/data/readme.json; the only words written here are navigation and control labels.
+import { ArrowRight, ArrowUpRight, GitPullRequest, Info } from 'lucide-react';
+import FirstByte from '../components/FirstByte';
+import Layout from '../components/Layout.astro';
+import ResourceFinder from '../components/ResourceFinder';
+import Shortlist from '../components/Shortlist';
+import { REPO, data, finderItems, finderLabels, pad, sectionByNum, sectionHref } from '../lib/content';
+
+const { hero, sections, providers, models, firstByte, streaming, path } = data;
+const LEAN: Record<string, string> = { 'real-time': 'Real-time', offline: 'Offline', both: 'Both' };
+const LICENSE: Record<string, string> = { permissive: 'Permissive', copyleft: 'Copyleft', restricted: 'Restricted weights' };
+const shipping = models.rows.filter((m) => m.kind !== 'restricted').length;
+// "Sub-100 ms (vendor)" -> the figure, flagged as the vendor's own claim.
+const cell = (c: string) => ({ text: c.replace(/\s*\(vendor\)$/, ''), vendor: /\(vendor\)$/.test(c) });
+---
+
+<Layout title={`${hero.name}: ${hero.headline}`} description={hero.lede} path="/">
+  <section class="hero shell">
+    <div class="hero__copy">
+      <p class="hero__name"><span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>{hero.name}</p>
+      <h1>{hero.headline}</h1>
+      <div class="hero__lede prose" set:html={hero.introHtml} />
+      <dl class="hero__stats">
+        <div><dt class="sr-only">Resources</dt><dd><strong class="mono">{data.count}</strong> resources</dd></div>
+        <div><dt class="sr-only">Sections</dt><dd><strong class="mono">{sections.length}</strong> sections</dd></div>
+        <div><dt class="sr-only">Providers</dt><dd><strong class="mono">{providers.rows.length}</strong> providers</dd></div>
+        <div><dt class="sr-only">Open models</dt><dd><strong class="mono">{models.rows.length}</strong> open models</dd></div>
+      </dl>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href="#providers">Pick a side <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" /></a>
+        <a class="btn" href={`${REPO}/blob/main/README.md`} rel="noopener">Read the README <ArrowUpRight size={16} strokeWidth={1.75} aria-hidden="true" /></a>
+      </div>
+    </div>
+    <div class="hero__panel">
+      <div class="panel">
+        <p class="panel__title"><a href={sectionHref(sectionByNum(4))}><span class="mono">04</span> {sectionByNum(4).title}</a></p>
+        <FirstByte client:visible budget={firstByte.budget} fast={firstByte.fast} slow={firstByte.slow} />
+        <div class="panel__text prose" set:html={firstByte.html} />
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="providers" aria-labelledby="providers-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="providers-title">Pick a side</h2>
+        <div class="prose" set:html={providers.introHtml} />
+      </div>
+      <Shortlist
+        client:load
+        label="Lean"
+        count="{n} of {total} providers"
+        options={[
+          { value: 'real-time', label: 'Real-time', tags: ['real-time', 'both'] },
+          { value: 'offline', label: 'Offline', tags: ['offline', 'both'] },
+        ]}
+        rows={providers.rows.map((p) => ({ name: p.name, tag: p.lean, tagLabel: LEAN[p.lean]!, html: p.bestFor }))}
+      />
+      <a class="more" href={sectionHref(sectionByNum(2))}>
+        Provider docs and notes <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  <section class="chapter" id="open" aria-labelledby="open-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="open-title">Open weights, read the license</h2>
+        <div class="prose" set:html={models.introHtml} />
+      </div>
+      <Shortlist
+        client:visible
+        label="License"
+        count="{n} of {total} open models"
+        options={[
+          { value: 'ship', label: 'No usage restriction', tags: ['permissive', 'copyleft'] },
+          { value: 'restricted', label: 'Restricted weights', tags: ['restricted'] },
+        ]}
+        rows={models.rows.map((m) => ({ name: m.name, tag: m.kind, tagLabel: LICENSE[m.kind]!, note: m.license, html: m.bestFor }))}
+      />
+      <p class="aside-note">
+        <Info size={15} strokeWidth={1.75} aria-hidden="true" />
+        <span>
+          Grouped from the README's License column: {shipping} of {models.rows.length} carry no non-commercial, research, usage-cap
+          or separate-grant term. Copyleft (GPL) still sets conditions on what you distribute. Read the license itself before you ship.
+        </span>
+      </p>
+      <a class="more" href={sectionHref(sectionByNum(3))}>
+        Every model, with its repository <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  <section class="chapter" id="streaming" aria-labelledby="streaming-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="streaming-title">Streaming, as published</h2>
+        <div class="prose" set:html={streaming.introHtml} />
+      </div>
+      <div class="stream__scroll">
+        <table class="stream">
+          <thead>
+            <tr>{streaming.columns.map((c) => <th>{c}</th>)}</tr>
+          </thead>
+          <tbody>
+            {
+              streaming.rows.map((r) => (
+                <tr>
+                  {r.map((c, i) => {
+                    const v = cell(c);
+                    return i === 0 ? (
+                      <th scope="row">{v.text}</th>
+                    ) : (
+                      <td data-yes={c === 'Yes' || undefined} data-no={c.startsWith('No') || undefined}>
+                        {v.text}
+                        {v.vendor && <span class="tag">vendor</span>}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <aside class="evidence" role="note">
+        <Info size={18} strokeWidth={1.75} aria-hidden="true" />
+        <div class="prose" set:html={streaming.noteHtml} />
+      </aside>
+      <a class="more" href={sectionHref(sectionByNum(4))}>
+        Cancellation, barge-in, and measuring TTFB yourself <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  <section class="chapter" id="path" aria-labelledby="path-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="path-title">Suggested learning path</h2>
+        <div class="prose" set:html={hero.levelsHtml} />
+      </div>
+      <ol class="steps">
+        {
+          path.map((p, i) => (
+            <li class="step" data-step>
+              <span class="step__num mono">{pad(i + 1)}</span>
+              <div>
+                <p class="step__label">{p.label}</p>
+                <p class="step__text prose" set:html={p.html} />
+                <p class="step__links">
+                  {p.sections.map((n) => {
+                    const s = sectionByNum(n);
+                    return (
+                      <a class="chip" href={sectionHref(s)}>
+                        <span class="mono">{pad(n)}</span> {s.title}
+                      </a>
+                    );
+                  })}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="chapter" id="find" aria-labelledby="find-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="find-title">Find a resource</h2>
+        <p>Every entry from the README, in one place.</p>
+      </div>
+      <ResourceFinder client:visible items={finderItems(sections)} labels={finderLabels(data.count)} />
+    </div>
+  </section>
+
+  <section class="chapter" id="sections" aria-labelledby="sections-title">
+    <div class="shell">
+      <div class="head">
+        <h2 id="sections-title">The list</h2>
+        <p>Every section of the README, with its collapsed lists opened up.</p>
+      </div>
+      <ul class="cards">
+        {
+          sections.map((s) => (
+            <li data-card>
+              <a class="card" href={sectionHref(s)}>
+                <span class="card__top">
+                  <span class="card__tab mono">{pad(s.num)}</span>
+                  <span class="card__count mono">{s.count} resources</span>
+                </span>
+                <span class="card__title">{s.title}</span>
+                <span class="card__intro">{s.intro}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter" aria-labelledby="contrib-title">
+    <div class="shell contrib">
+      <div>
+        <h2 id="contrib-title">Know a resource that belongs here?</h2>
+        <div class="prose" set:html={data.contributingHtml} />
+      </div>
+      <a class="btn" href={`${REPO}/issues/new`} rel="noopener"
+        ><GitPullRequest size={16} strokeWidth={1.75} aria-hidden="true" /> Suggest a resource</a
+      >
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { animate, stagger } from 'animejs';
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reveal = (selector: string) => {
+      const els = [...document.querySelectorAll<HTMLElement>(selector)];
+      els.forEach((el) => (el.style.opacity = '0'));
+      const io = new IntersectionObserver(
+        (entries) => {
+          const shown = entries.filter((e) => e.isIntersecting).map((e) => e.target as HTMLElement);
+          if (!shown.length) return;
+          shown.forEach((el) => io.unobserve(el));
+          animate(shown, { opacity: [0, 1], translateY: [12, 0], duration: 600, ease: 'outExpo', delay: stagger(45) });
+        },
+        { threshold: 0.15 },
+      );
+      els.forEach((el) => io.observe(el));
+    };
+    reveal('[data-card]');
+    reveal('[data-step]');
+  }
+</script>

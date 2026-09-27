@@ -1,0 +1,76 @@
+---
+// One README section. A section that is an intro plus one list becomes a searchable list,
+// filterable by level and by the README's own ### groups; section 4, with prose between its
+// lists, renders in full. Everything its <details> blocks hide is opened up.
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import Layout from '../components/Layout.astro';
+import ResourceFinder from '../components/ResourceFinder';
+import { REPO, data, finderItems, finderLabels, pad, sectionHref, type Section } from '../lib/content';
+
+export const getStaticPaths = () => data.sections.map((section) => ({ params: { slug: section.slug }, props: { section } }));
+const { section: s } = Astro.props as { section: Section };
+const i = data.sections.findIndex((x) => x.slug === s.slug);
+const prev = data.sections[i - 1];
+const next = data.sections[i + 1];
+const steps = data.path.filter((p) => p.sections.includes(s.num));
+---
+
+<Layout title={`${s.title} · ${data.hero.name}`} description={s.intro} path={sectionHref(s)}>
+  <article class="shell page">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">{data.hero.name}</a><span aria-hidden="true">/</span><a href="/#sections">Sections</a>
+    </nav>
+    <header class="page__head">
+      <p class="page__kicker mono">{pad(s.num)} · {s.count} resources</p>
+      <h1>{s.title}</h1>
+      {
+        steps.length > 0 && (
+          <p class="page__steps">
+            Learning path:{' '}
+            {steps.map((p, n) => (
+              <>
+                {n > 0 && ', '}
+                <a class="link" href="/#path">{p.label}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
+    </header>
+    {
+      s.leadHtml ? (
+        <>
+          <div class="doc__body prose md" set:html={s.leadHtml} />
+          <ResourceFinder client:load items={finderItems([s])} labels={finderLabels(s.count)} showSection={false} groups={s.groups} />
+        </>
+      ) : (
+        <div class="doc__body prose md" set:html={s.html} />
+      )
+    }
+    <p class="doc__edit">
+      <a class="link" href={`${REPO}/blob/main/README.md`} rel="noopener"
+        >Edit this section in README.md <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden="true" /></a
+      >
+    </p>
+    <nav class="pager" aria-label="Sections">
+      {
+        prev ? (
+          <a class="pager__link" href={sectionHref(prev)}>
+            <span class="pager__dir"><ArrowLeft size={14} strokeWidth={1.75} aria-hidden="true" /> Previous</span>
+            <span><span class="mono">{pad(prev.num)}</span> {prev.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next && (
+          <a class="pager__link pager__link--next" href={sectionHref(next)}>
+            <span class="pager__dir">Next <ArrowRight size={14} strokeWidth={1.75} aria-hidden="true" /></span>
+            <span><span class="mono">{pad(next.num)}</span> {next.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</Layout>

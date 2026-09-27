@@ -1,0 +1,13 @@
+// tts.mahimai.ca: a static site served from Workers static assets. Nothing runs server-side.
+{
+  "name": "tts",
+  "compatibility_date": "2026-09-27",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "tts.mahimai.ca", "custom_domain": true }],
+  // PR builds run `wrangler preview`, which requires this block; empty keeps the top-level settings
+  "previews": {}
+}

@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!site/src/lib/
 lib64/
 parts/
 sdist/
@@ -163,9 +164,6 @@ venv.bak/
 
 # Rope project settings
 .ropeproject
-
-# mkdocs documentation
-/site
 
 # mypy
 .mypy_cache/

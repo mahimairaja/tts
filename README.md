@@ -112,9 +112,10 @@ Every provider here is generally available today: send text, get audio back, no 
 | Provider | Lean | Best for |
 | --- | --- | --- |
 | ElevenLabs | both | Expressive Eleven v3 voices, dubbing, and a mature agent stack. |
-| Cartesia Sonic 3.5 | real-time | Lowest-latency conversational TTS (40 ms Turbo, vendor). |
+| Cartesia Sonic 3.6 | real-time | Low-latency conversational TTS with dated snapshots for pinning. |
 | Deepgram Aura-2 | real-time | Enterprise contact-center agents with on-prem option. |
-| OpenAI TTS | both | Steerable delivery via instructions inside the OpenAI stack. |
+| OpenAI TTS | both | Steerable delivery inside the OpenAI stack; current models shut down January 6, 2027. |
+| Mistral Voxtral TTS | real-time | Voice cloning plus a LiveKit-based voice agent SDK. |
 | Rime | real-time | High-volume IVR with deterministic pronunciation control. |
 | Hume Octave 2 | both | LLM-driven emotional prosody from text semantics. |
 | Inworld TTS | real-time | Natural-language voice steering across 200+ languages. |
@@ -124,6 +125,7 @@ Every provider here is generally available today: send text, get audio back, no 
 | PlayAI | both | Multi-speaker conversational dialogue synthesis (PlayDialog). |
 | Amazon Polly | both | AWS-native generative and neural voices with streaming. |
 | Google Cloud TTS | both | Chirp 3 HD voices across 50+ locales on GCP. |
+| Gemini TTS | both | Prompt-steered multi-speaker dialogue and voice design across 130+ languages. |
 | Azure Neural TTS | both | 600+ voices, Dragon HD, SSML, and batch synthesis. |
 | Murf | offline | Studio-grade voiceover with style and pacing control. |
 | WellSaid Labs | offline | Enterprise narration for e-learning and corporate video. |
@@ -131,13 +133,14 @@ Every provider here is generally available today: send text, get audio back, no 
 | Resemble AI | both | Voice cloning plus the open-source Chatterbox model. |
 
 <details>
-<summary><b>18 resources</b></summary>
+<summary><b>20 resources</b></summary>
 
 ### Real-time and agent-focused
 
-- 🟢 [Cartesia Sonic](https://docs.cartesia.ai/build-with-cartesia/tts-models/latest): State-space TTS built for conversation, with the current Sonic 3.5 model claiming sub-90 ms time-to-first-audio on standard and about 40 ms on Turbo (vendor), so pick it when interruption latency is the constraint.
+- 🟢 [Cartesia Sonic](https://docs.cartesia.ai/build-with-cartesia/tts-models/latest): State-space TTS built for conversation, whose current `sonic-3.6` alias covers 44 languages and is Cartesia's fastest model (vendor), with dated snapshots such as `sonic-3.6-2026-08-27` for pinning; pick it when interruption latency is the constraint.
 - 🟢 [Deepgram Aura-2 Docs](https://developers.deepgram.com/docs/tts-models): Enterprise TTS with 40+ contact-center-tuned voices and cloud, private-cloud, or on-prem deployment, paired natively with Deepgram STT for a single-vendor agent stack.
-- 🟢 [OpenAI TTS (gpt-4o-mini-tts)](https://developers.openai.com/api/docs/guides/text-to-speech): Steerable TTS that takes a plain-language instruction to control tone and delivery, and is the path of least resistance if your agent already runs on the OpenAI API.
+- 🟢 [OpenAI TTS (gpt-4o-mini-tts)](https://developers.openai.com/api/docs/guides/text-to-speech): Steerable TTS that takes a plain-language instruction to control tone and delivery, but `gpt-4o-mini-tts`, `tts-1`, and `tts-1-hd` shut down on January 6, 2027, and OpenAI points new voice work to `gpt-realtime-2.1-mini` over the Realtime API, so plan the migration before you build on it.
+- 🟢 [Mistral Voxtral TTS 3](https://docs.mistral.ai/studio/audio/text-to-speech/overview): Voxtral Mini TTS 3 (October 2026) clones voices and speaks 35+ languages at $13 per 1M characters, and Mistral's LiveKit-based voice agent SDK pairs it with Voxtral realtime STT for a single-vendor stack.
 - 🟢 [Rime Docs](https://docs.rime.ai/docs/introduction): Low-latency TTS aimed at IVR and high-volume calling, whose Mist v3 model (TTFA around 37 ms P50) gives deterministic pronunciation you define once and reuse, so numbers and names read the same on every call; note the commercial author.
 - 🟡 [Hume Octave 2](https://dev.hume.ai/docs/text-to-speech-tts/overview): LLM-based TTS that reads emotional and semantic intent from the text and adapts pitch, tempo, and emphasis to match, useful when a flat read breaks the interaction.
 - 🟢 [Inworld TTS Docs](https://docs.inworld.ai/tts/tts): Realtime TTS-2 adds natural-language voice steering and covers 200+ languages and locales, with the mini tier around 120 ms median latency (vendor).
@@ -150,11 +153,12 @@ Every provider here is generally available today: send text, get audio back, no 
 - 🟢 [ElevenLabs Docs](https://elevenlabs.io/docs): Flagship Eleven v3 covers 70+ languages with inline audio tags for laughter, hesitation, and emotion, making it the default for audiobooks, dubbing, and dramatic voiceover while also serving agents.
 - 🟢 [PlayHT (now PlayAI) Text to Speech Docs](https://docs.play.ht/reference/api-getting-started): PlayDialog synthesizes multi-turn, multi-speaker conversations using prior context to shape prosody and pacing, useful for podcast-style and scripted dialogue content; note the commercial author.
 - 🟢 [Amazon Polly Generative Voices](https://docs.aws.amazon.com/polly/latest/dg/generative-voices.html): AWS-native TTS whose generative engine supports bidirectional streaming and offers 43 expressive voices across many locales, the low-friction pick when the rest of your stack is on AWS.
+- 🟢 [Gemini 3.8 Flash TTS](https://ai.google.dev/gemini-api/docs/speech-generation): Google's prompt-steered TTS (GA September 2026) for multi-speaker dialogue, voice design, and voice replication across 130+ languages, with `gemini-3.8-flash-lite-tts` as the lower-latency tier.
 - 🟢 [Google Cloud Chirp 3 HD Voices](https://docs.cloud.google.com/text-to-speech/docs/chirp3-hd): Latest-generation Google voices with pace and pause control and text-streaming for low-latency use, GA across 50+ languages and locales for teams already on GCP.
 - 🟢 [Azure AI Speech TTS Overview](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech): 600+ neural voices over 150 languages plus SSML and batch synthesis, with Dragon HD voices unifying prebuilt and generated voices for enterprise Azure deployments.
 - 🟢 [Murf Gen 2 API Docs](https://murf.ai/api/docs/text-to-speech-models/gen-2): Studio-grade TTS with speaking styles and pacing control across 150+ voices, built for produced voiceover rather than real-time agents; note the commercial author.
 - 🟢 [WellSaid Labs API Docs](https://docs.wellsaidlabs.com/docs/getting-started): Enterprise narration API with a large catalog of voice-and-style combinations and SSML, aimed at e-learning, training, and corporate video where consistency beats latency.
-- 🟢 [Speechify API Docs](https://docs.speechify.ai/): Single API over a large voice library with cloning from short samples, streaming, and SSML, spanning reading assistants and general media use; note the commercial author.
+- 🟢 [Speechify API Docs](https://docs.speechify.ai/): Single API over a large voice library with cloning from short samples, streaming, and SSML, where `simba-3.5` covers 48 languages under one model ID, spanning reading assistants and general media use; note the commercial author.
 - 🟡 [Resemble AI Chatterbox](https://www.resemble.ai/products/text-to-speech): Commercial voice-cloning platform whose open-source Chatterbox model (MIT, 23 languages, zero-shot cloning) lets you prototype free and move to the hosted API for SLAs; note the commercial author.
 
 </details>
@@ -176,6 +180,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 | CosyVoice 2 / 3 | Apache 2.0 | Streaming LLM TTS with about 150 ms first-chunk latency (vendor) and strong Chinese and English. |
 | Dia (Nari Labs, Dia 2 family) | Apache 2.0 | One-pass multi-speaker dialogue with laughs, sighs, and turns. |
 | Fish Speech / OpenAudio S1-mini | Apache 2.0 code, CC-BY-NC-SA-4.0 weights | Low-WER multilingual cloning from a 10 to 30 s sample. |
+| Fish Audio Drama 3 | Fish Audio Community License (paid license above $500K annual revenue) | Directed, expressive lines across 83 languages from a 35B MoE. |
 | GPT-SoVITS | MIT | Best-similarity few-shot cloning from about 1 minute of audio. |
 | F5-TTS | MIT code, CC-BY-NC-4.0 weights | Research and non-commercial flow-matching cloning; retrain to ship. |
 | StyleTTS 2 | MIT | Human-level single and multi-speaker quality via style diffusion. |
@@ -186,7 +191,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 | MaskGCT (Amphion) | Amphion / research (CC-BY-NC weights) | Non-autoregressive masked-codec zero-shot TTS with no forced alignment. |
 
 <details>
-<summary><b>19 resources</b></summary>
+<summary><b>20 resources</b></summary>
 
 ### Real-time and lightweight
 
@@ -204,6 +209,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 - 🟡 [Coqui TTS (idiap/coqui-ai-TTS)](https://github.com/idiap/coqui-ai-TTS): The community-maintained idiap fork of Coqui after the company shut down, keeping XTTS v2 zero-shot cloning across 17 languages alive, though the pretrained weights remain under the non-commercial Coqui Public ML License.
 - 🟡 [Dia (nari-labs/dia)](https://github.com/nari-labs/dia): An Apache 2.0 model that generates ultra-realistic multi-speaker dialogue in one pass with non-verbal cues like (laughs) and (sighs), now extended by the Dia 2 family.
 - 🟡 [Fish Speech / OpenAudio S1 (fishaudio/fish-speech)](https://github.com/fishaudio/fish-speech): The rebranded OpenAudio line whose S1-mini (0.5B) clones a voice from a 10 to 30 s sample at low WER under Apache 2.0 code but CC-BY-NC-SA-4.0 weights, with the larger S1 offered as a hosted flagship.
+- 🔴 [Fish Audio Drama 3 (fishaudio/drama-3)](https://huggingface.co/fishaudio/drama-3): A 35B mixture-of-experts TTS with about 3B active parameters (October 2026) that renders expressive, directed lines across 83 languages, with 88.9 ms median first audio on one H200 (vendor), though its community license requires a paid grant above $500K annual revenue or for TTS services.
 - 🟡 [GPT-SoVITS (RVC-Boss/GPT-SoVITS)](https://github.com/RVC-Boss/GPT-SoVITS): An MIT-licensed system that does zero-shot cloning from a 5 s clip and few-shot fine-tuning from about 1 minute of audio, the go-to when speaker similarity matters most.
 - 🔴 [F5-TTS (SWivid/F5-TTS)](https://github.com/SWivid/F5-TTS): A flow-matching DiT TTS with MIT code, but its pretrained weights are CC-BY-NC-4.0 because of the Emilia dataset, so you must retrain on licensed data to ship commercially.
 - 🔴 [StyleTTS 2 (yl4579/StyleTTS2)](https://github.com/yl4579/StyleTTS2): An MIT-licensed model that reaches human-level naturalness via style diffusion and adversarial training with speech language models, and is the architectural ancestor of Kokoro.

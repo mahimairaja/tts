@@ -175,6 +175,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 | Coqui XTTS v2 (idiap fork) | Coqui Public ML License (non-commercial weights) | Zero-shot cloning across 17 languages from a maintained fork. |
 | MeloTTS | MIT | Realtime CPU inference with multiple English accents. |
 | Kitten TTS | Apache 2.0 | Ultra-light 15M to 80M ONNX models for edge and browser deploys. |
+| Ito | GPL v3 code, CC BY-NC-SA 4.0 weights (gated, non-commercial) | Streaming TTS that runs on an ESP32-S3 microcontroller (3.3M parameters, no cloud); phonemization runs on the host. |
 | Orpheus-TTS | Apache 2.0 | Emotive Llama-3B TTS with token-streaming for agents. |
 | Sesame CSM-1B | Apache 2.0 | Context-aware conversational speech that conditions on dialogue history. |
 | CosyVoice 2 / 3 | Apache 2.0 | Streaming LLM TTS with about 150 ms first-chunk latency (vendor) and strong Chinese and English. |
@@ -191,7 +192,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 | MaskGCT (Amphion) | Amphion / research (CC-BY-NC weights) | Non-autoregressive masked-codec zero-shot TTS with no forced alignment. |
 
 <details>
-<summary><b>20 resources</b></summary>
+<summary><b>21 resources</b></summary>
 
 ### Real-time and lightweight
 
@@ -203,6 +204,7 @@ Self-hostable TTS in 2026 spans two poles: tiny CPU-friendly models that stream 
 - 🟡 [Orpheus-TTS (canopyai/Orpheus-TTS)](https://github.com/canopyai/Orpheus-TTS): An Apache 2.0 Llama-3B TTS with emotion tags and token streaming, hitting about 200 ms latency that drops to about 100 ms when input text is streamed (vendor).
 - 🟡 [Sesame CSM (SesameAILabs/csm)](https://github.com/SesameAILabs/csm): The Apache 2.0 CSM-1B conversational speech model generates context-aware audio conditioned on interleaved text and audio history, built for back-and-forth agents rather than one-shot narration.
 - 🟡 [CosyVoice (FunAudioLLM/CosyVoice)](https://github.com/FunAudioLLM/CosyVoice): Apache 2.0 streaming TTS whose CosyVoice 2 uses a Qwen2.5-0.5B backbone with chunk-aware flow matching for about 150 ms first-chunk latency (vendor), with CosyVoice 3 (0.5B) checkpoints now released.
+- 🟡 [Ito (lokutor-ai/ito)](https://github.com/lokutor-ai/ito): A 3.3M-parameter English streaming TTS whose neural model runs on an ESP32-S3 with no cloud or accelerator, reporting a first 125 ms chunk about 180 ms after phoneme ids on one board (phonemization runs on the host); GPL v3 code with gated CC BY-NC-SA 4.0 weights, and the authors' commercial licence is available (vendor).
 
 ### High-fidelity and cloning
 
